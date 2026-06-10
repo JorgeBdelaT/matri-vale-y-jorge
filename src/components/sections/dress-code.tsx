@@ -23,12 +23,17 @@ export function DressCode() {
               <li
                 key={swatch.label}
                 className={cn(
-                  "relative grid min-h-[146px] place-items-center overflow-hidden rounded-[28px] shadow-[0_20px_60px_rgba(42,27,27,.13)]",
-                  "after:absolute after:inset-0 after:grid after:place-items-center after:text-[5.5rem] after:font-extralight after:opacity-20 after:content-['×']",
+                  "grid min-h-[146px] grid-rows-[1fr_auto] place-items-center overflow-hidden rounded-[28px] px-3 pb-4 pt-1 shadow-[0_20px_60px_rgba(42,27,27,.13)]",
                   swatch.className
                 )}
               >
-                <span className="relative z-[2] rounded-full bg-paper/70 px-3 py-[7px] text-[0.72rem] font-black uppercase tracking-[0.18em] text-ink">
+                <span
+                  aria-hidden="true"
+                  className="text-[3.6rem] font-extralight leading-none opacity-25"
+                >
+                  ×
+                </span>
+                <span className="rounded-full bg-paper/70 px-3 py-[7px] text-[0.72rem] font-black uppercase tracking-[0.18em] text-ink">
                   {swatch.label}
                 </span>
               </li>

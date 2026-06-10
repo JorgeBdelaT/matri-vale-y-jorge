@@ -26,6 +26,7 @@ export function Story() {
                   ideal 4:5
                 </>
               }
+              zoomOnHover
               className="absolute left-0 top-[34px] h-[430px] min-h-0 w-[73%] -rotate-[2.5deg] max-[860px]:h-[340px] max-[860px]:w-[78%]"
             />
             <PhotoPlaceholder
@@ -38,6 +39,7 @@ export function Story() {
                   ideal 3:4
                 </>
               }
+              zoomOnHover
               className="absolute bottom-0 right-0 h-[300px] min-h-0 w-[48%] rotate-[4deg] bg-[linear-gradient(145deg,rgba(104,116,58,.34),rgba(255,249,238,.86)),repeating-linear-gradient(-45deg,rgba(75,15,24,.08)_0_1px,transparent_1px_12px)] max-[860px]:h-[230px] max-[860px]:w-[54%]"
             />
           </div>

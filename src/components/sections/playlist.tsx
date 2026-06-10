@@ -1,10 +1,9 @@
 import { CtaButton } from "@/components/common/cta-button";
 import { Doodle } from "@/components/common/doodle";
-import { PhotoPlaceholder } from "@/components/common/photo-placeholder";
 import { Reveal } from "@/components/common/reveal";
 import { Section, SectionContainer } from "@/components/common/section";
 import { Eyebrow, Lead, SectionTitle } from "@/components/common/typography";
-import { COPY, IMAGES, LINKS } from "@/lib/constants";
+import { COPY, LINKS } from "@/lib/constants";
 
 /** Playlist colaborativa de Spotify con CTA para agregar canciones. */
 export function Playlist() {
@@ -19,18 +18,6 @@ export function Playlist() {
           <CtaButton variant="dark" href={LINKS.spotifyPlaylist}>
             {COPY.playlist.cta}
           </CtaButton>
-          <PhotoPlaceholder
-            src={IMAGES.playlist}
-            alt="Vale y Jorge bailando"
-            label={
-              <>
-                Espacio para foto bailando o momento entretenido
-                <br />
-                ideal horizontal
-              </>
-            }
-            className="mx-auto mt-[54px] max-w-[860px]"
-          />
           <div className="mx-auto mt-[46px] w-full max-w-[900px] overflow-hidden rounded-[32px] border border-burgundy/15 shadow-[0_26px_76px_rgba(0,0,0,.18)]">
             <iframe
               title="Playlist de Spotify del matrimonio"

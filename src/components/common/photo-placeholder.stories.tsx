@@ -25,3 +25,7 @@ export const SobreBandaOscura: Story = {
   args: { onDark: true },
   globals: { backgrounds: { value: "olive" } },
 };
+
+export const ConZoomAlHover: Story = {
+  args: { zoomOnHover: true },
+};

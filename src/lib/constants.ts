@@ -79,8 +79,6 @@ export const IMAGES = {
   hero: null as string | null,
   storyLarge: null as string | null,
   storySmall: null as string | null,
-  venue: null as string | null,
-  playlist: null as string | null,
   rsvpStrip: [null, null, null] as (string | null)[],
 };
 
