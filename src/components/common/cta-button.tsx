@@ -29,7 +29,7 @@ export function CtaButton({
     <Button
       asChild
       className={cn(
-        "mt-[34px] inline-flex h-auto min-h-[60px] gap-2.5 rounded-full border px-10 py-[18px] text-[0.85rem] font-extrabold uppercase tracking-[0.18em] no-underline transition-[transform,background-color,color,border-color,box-shadow,scale] duration-300 ease-out hover:-translate-y-1 hover:scale-105 active:scale-95 active:duration-100 motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:scale-100 motion-reduce:active:scale-100",
+        "mt-[34px] inline-flex h-auto min-h-[60px] animate-cta-float gap-2.5 rounded-full border px-10 py-[18px] text-[0.85rem] font-extrabold uppercase tracking-[0.18em] no-underline transition-[background-color,color,border-color,box-shadow,scale] duration-300 ease-out hover:scale-105 active:scale-95 active:duration-100 motion-reduce:animate-none motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:active:scale-100",
         variantClasses[variant],
         className
       )}

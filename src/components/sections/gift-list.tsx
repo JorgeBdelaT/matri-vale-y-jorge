@@ -1,3 +1,4 @@
+import { CopyCode } from "@/components/common/copy-code";
 import { CtaButton } from "@/components/common/cta-button";
 import { Doodle } from "@/components/common/doodle";
 import { Reveal } from "@/components/common/reveal";
@@ -15,14 +16,13 @@ export function GiftList() {
           <Eyebrow>{COPY.gifts.eyebrow}</Eyebrow>
           <SectionTitle id="regalos-title">{COPY.gifts.title}</SectionTitle>
           <Lead>{COPY.gifts.lead}</Lead>
-          <div className="mx-auto mt-10 w-full max-w-[330px] rounded-[30px] border border-paper/30 bg-paper/10 px-6 py-7">
-            <small className="mb-2.5 block text-[0.72rem] font-extrabold uppercase tracking-[0.22em]">
-              {COPY.gifts.codeLabel}
-            </small>
-            <strong className="font-serif text-[3.4rem] font-normal">
-              {GIFT_LIST.code}
-            </strong>
-          </div>
+          <CopyCode
+            label={COPY.gifts.codeLabel}
+            code={GIFT_LIST.code}
+            hint={COPY.gifts.copyHint}
+            copiedMessage={COPY.gifts.copiedMessage}
+            className="mt-10"
+          />
           <CtaButton variant="light" href={LINKS.giftList}>
             {COPY.gifts.cta}
           </CtaButton>

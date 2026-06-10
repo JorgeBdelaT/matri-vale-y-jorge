@@ -130,6 +130,8 @@ export const COPY = {
     title: "Lista de novios",
     lead: "El mejor regalo es que nos acompañes, pero si deseas tener un detalle con nosotros, dejamos esta opción.",
     codeLabel: "Código novios",
+    copyHint: "Toca para copiar",
+    copiedMessage: "¡Copiado!",
     cta: "Ver lista",
   },
   footer: {
