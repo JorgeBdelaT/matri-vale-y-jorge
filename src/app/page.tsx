@@ -1,14 +1,14 @@
-import { Countdown } from "@/components/sections/countdown";
-import { DressCode } from "@/components/sections/dress-code";
-import { EnvelopeIntro } from "@/components/sections/envelope-intro";
-import { GiftList } from "@/components/sections/gift-list";
-import { Hero } from "@/components/sections/hero";
-import { Location } from "@/components/sections/location";
-import { Playlist } from "@/components/sections/playlist";
-import { Rsvp } from "@/components/sections/rsvp";
-import { Schedule } from "@/components/sections/schedule";
-import { SiteFooter } from "@/components/sections/site-footer";
-import { Story } from "@/components/sections/story";
+import { Countdown } from "@/components/sections/countdown/countdown.component";
+import { DressCode } from "@/components/sections/dress-code/dress-code.component";
+import { EnvelopeIntro } from "@/components/sections/envelope-intro/envelope-intro.component";
+import { GiftList } from "@/components/sections/gift-list/gift-list.component";
+import { Hero } from "@/components/sections/hero/hero.component";
+import { Location } from "@/components/sections/location/location.component";
+import { Playlist } from "@/components/sections/playlist/playlist.component";
+import { Rsvp } from "@/components/sections/rsvp/rsvp.component";
+import { Schedule } from "@/components/sections/schedule/schedule.component";
+import { SiteFooter } from "@/components/sections/site-footer/site-footer.component";
+import { Story } from "@/components/sections/story/story.component";
 
 export default function Home() {
   return (

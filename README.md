@@ -18,14 +18,15 @@ pnpm build-storybook  # build estático de Storybook
 
 ```
 src/
-  app/                  # layout (fuentes, metadata) y página única
-  lib/constants.ts      # TODO el contenido: fechas, enlaces, textos, rutas de fotos
-  hooks/use-countdown.ts# cuenta regresiva en vivo
-  components/
-    ui/                 # primitivas shadcn/ui
-    common/             # bloques reutilizables (Section, Doodle, Reveal, …)
-    sections/           # una sección de la página por archivo, con su .stories.tsx
-public/images/          # fotografías (se versionan en el repo)
+  app/                        # layout (fuentes, metadata) y página única
+  lib/constants.const.ts      # TODO el contenido: fechas, enlaces, textos, rutas de fotos
+  lib/utils.util.ts           # helper cn()
+  hooks/*.hook.ts             # use-countdown, use-prefers-reduced-motion
+  components/                 # carpeta por componente:
+    ui/button/                #   <nombre>.component.tsx + <nombre>.stories.tsx
+    common/<nombre>/          # bloques reutilizables (Section, Doodle, Reveal, …)
+    sections/<nombre>/        # una sección de la página por carpeta
+public/images/                # fotografías (se versionan en el repo)
 ```
 
 ## Cómo agregar las fotos reales
