@@ -1,0 +1,41 @@
+import { CtaButton } from "@/components/common/cta-button";
+import { Doodle } from "@/components/common/doodle";
+import { PhotoPlaceholder } from "@/components/common/photo-placeholder";
+import { Reveal } from "@/components/common/reveal";
+import { Section, SectionContainer } from "@/components/common/section";
+import { Eyebrow, Lead, SectionTitle } from "@/components/common/typography";
+import { COPY, IMAGES, LINKS } from "@/lib/constants";
+
+/** Confirmación de asistencia: abre el formulario de Google. */
+export function Rsvp() {
+  return (
+    <Section variant="burgundy" center aria-labelledby="rsvp-title">
+      <Doodle variant="envelope" position="tl" rotation={6} className="opacity-[0.23]" />
+      <SectionContainer>
+        <Reveal>
+          <Eyebrow>{COPY.rsvp.eyebrow}</Eyebrow>
+          <SectionTitle id="rsvp-title">{COPY.rsvp.title}</SectionTitle>
+          <Lead>{COPY.rsvp.lead}</Lead>
+          <CtaButton variant="light" href={LINKS.rsvpForm}>
+            {COPY.rsvp.cta}
+          </CtaButton>
+          <div
+            className="mt-[58px] grid grid-cols-3 gap-[18px] max-[860px]:grid-cols-1"
+            aria-label="Espacios para fotografías de los novios"
+          >
+            {IMAGES.rsvpStrip.map((src, index) => (
+              <PhotoPlaceholder
+                key={index}
+                src={src}
+                alt={`Fotografía ${index + 1} de Vale y Jorge`}
+                onDark
+                label={`Foto ${index + 1}`}
+                className="min-h-[260px]"
+              />
+            ))}
+          </div>
+        </Reveal>
+      </SectionContainer>
+    </Section>
+  );
+}

@@ -1,0 +1,147 @@
+/**
+ * Única fuente de verdad para todo el contenido y configuración del sitio.
+ */
+
+export const COUPLE = {
+  bride: "Vale",
+  groom: "Jorge",
+  monogram: "V & J",
+  displayName: "Vale & Jorge",
+} as const;
+
+export const WEDDING = {
+  /** Hora de inicio en Chile continental (UTC-3 en octubre, horario de verano). */
+  startDateISO: "2026-10-24T17:00:00-03:00",
+  endDateISO: "2026-10-25T01:00:00-03:00",
+  dateLabel: "24 Octubre 2026",
+  dateLongLabel: "Sábado 24 de octubre de 2026",
+  timeLabel: "desde las 17:00 hrs hasta la 01:00 hrs",
+} as const;
+
+export const VENUE = {
+  name: "Herbarium",
+  address: "Av. José Arrieta 9960, Peñalolén, Región Metropolitana",
+  shortLabel: "Herbarium · Peñalolén",
+  mapsUrl:
+    "https://www.google.com/maps/place/Herbarium/@-33.4670563,-70.5279897,17z/data=!3m1!4b1!4m6!3m5!1s0x9662cdffd9f2adbb:0x1602e953b7b360d8!8m2!3d-33.4670608!4d-70.5254148!16s%2Fg%2F11c3rmz4cn?entry=ttu",
+  mapsEmbedUrl:
+    "https://maps.google.com/maps?q=Herbarium%20Av.%20Jos%C3%A9%20Arrieta%209960%20Pe%C3%B1alol%C3%A9n&t=&z=15&ie=UTF8&iwloc=&output=embed",
+} as const;
+
+export const LINKS = {
+  rsvpForm: "https://forms.gle/c4vqyZxn6FgkiRes8",
+  spotifyPlaylist:
+    "https://open.spotify.com/playlist/6eUt08vppknVyKL1NpvjSB?si=HA6aAUieRXmYjwhSoJwQBg&pt=1484623aeb9f75daa4f3c87e44c83d19",
+  spotifyEmbed:
+    "https://open.spotify.com/embed/playlist/6eUt08vppknVyKL1NpvjSB?utm_source=generator",
+  giftList: "https://www.noviosparis.cl/home/couple-catalog/6970877",
+} as const;
+
+export const GIFT_LIST = {
+  store: "Novios Paris",
+  code: "6970877",
+} as const;
+
+export interface TimelineItem {
+  time: string;
+  icon: string;
+  label: string;
+}
+
+export const TIMELINE: TimelineItem[] = [
+  { time: "17:00", icon: "✦", label: "Inicio de la celebración" },
+  { time: "20:00", icon: "♬", label: "Cena y brindis" },
+  { time: "22:00", icon: "❦", label: "Fiesta" },
+  { time: "01:00", icon: "☾", label: "Cierre" },
+];
+
+export interface DressCodeSwatch {
+  label: string;
+  className: string;
+}
+
+export const DRESS_CODE = {
+  code: "Formal",
+  note: "Para mantener la armonía visual de la celebración, por favor evitar blanco, burdeo, borgoña y rojo.",
+  avoid: [
+    { label: "Blanco", className: "bg-white border border-ink/15" },
+    { label: "Rojo", className: "bg-[#9f1d1d] text-white" },
+    { label: "Burdeo", className: "bg-[#6d0f1d] text-white" },
+    { label: "Borgoña", className: "bg-burgundy text-white" },
+  ] satisfies DressCodeSwatch[],
+} as const;
+
+/**
+ * Rutas de imágenes dentro de /public. Cuando existan las fotos reales,
+ * basta con agregar el archivo y completar la ruta aquí.
+ */
+export const IMAGES = {
+  hero: null as string | null,
+  storyLarge: null as string | null,
+  storySmall: null as string | null,
+  venue: null as string | null,
+  playlist: null as string | null,
+  rsvpStrip: [null, null, null] as (string | null)[],
+};
+
+export const COPY = {
+  intro: {
+    eyebrow: "Nos casamos",
+    scrollCue: "Desliza",
+  },
+  hero: {
+    eyebrow: "Matrimonio",
+    lead: "Queremos celebrar este día rodeados de las personas que más queremos. Gracias por ser parte de nuestra historia.",
+  },
+  story: {
+    eyebrow: "Nuestra historia",
+    title: "Un día para celebrar",
+    lead: "Entre pedaleos, libros compartidos, cafés de la mañana y caminatas por la naturaleza construimos esta historia. Ahora queremos celebrar el siguiente capítulo junto a ustedes.",
+  },
+  countdown: {
+    eyebrow: "Faltan",
+    title: "Para el gran día",
+    lead: "Cada segundo nos acerca un poquito más a celebrar contigo.",
+  },
+  schedule: {
+    eyebrow: "Ceremonia y celebración",
+    title: "Fecha y horario",
+  },
+  location: {
+    eyebrow: "Ubicación",
+    cta: "Ver ubicación",
+  },
+  dressCode: {
+    eyebrow: "Código de vestimenta",
+    title: "Formal",
+  },
+  rsvp: {
+    eyebrow: "Confirmación",
+    title: "¿Nos acompañas?",
+    lead: "Para organizar todo con mucho cariño, te pedimos confirmar tu asistencia lo antes posible.",
+    cta: "Confirmar asistencia",
+  },
+  playlist: {
+    eyebrow: "Nuestra música",
+    title: "La playlist",
+    lead: "Ayúdanos a crear la mejor pista de baile. Agrega esas canciones que no pueden faltar.",
+    cta: "Agregar canciones",
+  },
+  gifts: {
+    eyebrow: "Sugerencia de regalo",
+    title: "Lista de novios",
+    lead: "El mejor regalo es que nos acompañes, pero si deseas tener un detalle con nosotros, dejamos esta opción.",
+    codeLabel: "Código novios",
+    cta: "Ver lista",
+  },
+  footer: {
+    tagline: "24 octubre 2026 · con mucho amor",
+  },
+} as const;
+
+export const SITE = {
+  title: "Vale & Jorge · 24 Octubre 2026",
+  description:
+    "Nos casamos. Sábado 24 de octubre de 2026 en Herbarium, Peñalolén. Acompáñanos a celebrar.",
+  url: "https://matri-vale-y-jorge.vercel.app",
+} as const;
