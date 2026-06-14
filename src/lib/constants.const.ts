@@ -79,6 +79,7 @@ export const DRESS_CODE = {
  */
 export const IMAGES = {
   hero: "/images/hero.jpeg" as string | null,
+  footer: "/images/footer.jpg" as string | null,
   storyLarge: null as string | null,
   storyLargeVideo: "/images/story-large.mp4" as string | null,
   storySmall: "/images/story-small-2.jpg" as string | null,
