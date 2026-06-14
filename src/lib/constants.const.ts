@@ -61,8 +61,10 @@ export interface DressCodeSwatch {
 }
 
 export const DRESS_CODE = {
-  code: "Formal",
-  note: "Para mantener la armonía visual de la celebración, por favor evitar blanco, burdeo, borgoña y rojo.",
+  code: "Elegante",
+  noteBefore: "Para mantener la armonía visual de la celebración, por favor ",
+  noteEmphasis: "evitar",
+  noteAfter: " blanco, burdeo, borgoña y rojo.",
   avoid: [
     { label: "Blanco", className: "bg-white border border-ink/15" },
     { label: "Rojo", className: "bg-[#9f1d1d] text-white" },
@@ -76,10 +78,11 @@ export const DRESS_CODE = {
  * basta con agregar el archivo y completar la ruta aquí.
  */
 export const IMAGES = {
-  hero: null as string | null,
+  hero: "/images/hero.jpeg" as string | null,
   storyLarge: null as string | null,
-  storySmall: null as string | null,
-  rsvpStrip: [null, null, null] as (string | null)[],
+  storyLargeVideo: "/images/story-large.mp4" as string | null,
+  storySmall: "/images/story-small-2.jpg" as string | null,
+  rsvpStrip: ["/images/rsvp-strip-1.jpg", "/images/rsvp-strip-2.jpeg", "/images/rsvp-strip-3.JPG"] as (string | null)[],
 };
 
 export const COPY = {
@@ -111,7 +114,7 @@ export const COPY = {
   },
   dressCode: {
     eyebrow: "Código de vestimenta",
-    title: "Formal",
+    title: "Elegante",
   },
   rsvp: {
     eyebrow: "Confirmación",

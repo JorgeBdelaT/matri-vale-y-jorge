@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils.util";
 interface PhotoPlaceholderProps {
   /** Ruta dentro de /public. Si existe, se muestra la foto real. */
   src?: string | null;
+  /** Ruta de un video en /public. Tiene prioridad sobre `src` y se reproduce en bucle. */
+  videoSrc?: string | null;
   alt?: string;
   /** Texto guía mientras no hay foto. */
   label: React.ReactNode;
@@ -12,6 +14,8 @@ interface PhotoPlaceholderProps {
   onDark?: boolean;
   /** Agranda la foto (o el marco, si aún no hay foto) al pasar el cursor. */
   zoomOnHover?: boolean;
+  /** Omite la optimización de Next (necesario para conservar GIFs animados). */
+  unoptimized?: boolean;
   className?: string;
 }
 
@@ -21,12 +25,21 @@ interface PhotoPlaceholderProps {
  */
 export function PhotoPlaceholder({
   src,
+  videoSrc,
   alt = "",
   label,
   onDark = false,
   zoomOnHover = false,
+  unoptimized = false,
   className,
 }: PhotoPlaceholderProps) {
+  const hasMedia = Boolean(videoSrc || src);
+  const mediaClassName = cn(
+    "absolute inset-0 h-full w-full object-cover",
+    zoomOnHover &&
+      "transition-transform duration-500 ease-out group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+  );
+
   return (
     <div
       className={cn(
@@ -34,7 +47,7 @@ export function PhotoPlaceholder({
         zoomOnHover &&
           "group transition-transform duration-500 ease-out motion-reduce:transition-none",
         zoomOnHover &&
-          !src &&
+          !hasMedia &&
           "hover:scale-[1.04] motion-reduce:hover:scale-100",
         onDark
           ? "border-paper/25 bg-[linear-gradient(145deg,rgba(255,249,238,.12),rgba(255,249,238,.05)),repeating-linear-gradient(45deg,rgba(255,249,238,.12)_0_1px,transparent_1px_12px)] text-paper/80 shadow-[0_24px_70px_rgba(0,0,0,.16)]"
@@ -42,12 +55,24 @@ export function PhotoPlaceholder({
         className
       )}
     >
-      {src ? (
+      {videoSrc ? (
+        <video
+          src={videoSrc}
+          poster={src ?? undefined}
+          aria-label={alt}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className={mediaClassName}
+        />
+      ) : src ? (
         <Image
           src={src}
           alt={alt}
           fill
           sizes="(max-width: 900px) 100vw, 900px"
+          unoptimized={unoptimized}
           className={cn(
             "object-cover",
             zoomOnHover &&

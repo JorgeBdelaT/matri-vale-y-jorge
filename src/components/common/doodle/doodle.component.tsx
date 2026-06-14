@@ -118,6 +118,8 @@ interface DoodleProps {
   variant: DoodleVariant;
   position: DoodlePosition;
   rotation?: number;
+  /** Factor de escala adicional (1 = tamaño original). */
+  scale?: number;
   className?: string;
 }
 
@@ -125,7 +127,7 @@ interface DoodleProps {
  * Ilustración decorativa estilo "mano alzada". Siempre oculta para
  * lectores de pantalla.
  */
-export function Doodle({ variant, position, rotation = 0, className }: DoodleProps) {
+export function Doodle({ variant, position, rotation = 0, scale = 1, className }: DoodleProps) {
   return (
     <div
       aria-hidden="true"
@@ -134,7 +136,7 @@ export function Doodle({ variant, position, rotation = 0, className }: DoodlePro
         positionClasses[position],
         className
       )}
-      style={{ transform: `rotate(${rotation}deg)` }}
+      style={{ transform: `rotate(${rotation}deg) scale(${scale})` }}
     >
       <svg
         viewBox="0 0 120 120"

@@ -286,14 +286,33 @@
 
     /* Hero */
     .hero {
+      position: relative;
       min-height: 96vh;
       display: grid;
       place-items: center;
       color: var(--paper);
-      background:
-        linear-gradient(180deg, rgba(75,15,24,.68), rgba(75,15,24,.78)),
-        url("https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=1800&auto=format&fit=crop") center/cover;
+      overflow: hidden;
     }
+    /* Layer 1: full-image blur over the whole hero background */
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -24px;
+      background: url("public/images/hero.jpeg") center/cover;
+      filter: blur(3px);
+      transform: scale(1.06);
+      z-index: 0;
+    }
+    /* Tint overlay kept sharp on top of the blurred image */
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(75,15,24,.68), rgba(75,15,24,.78));
+      z-index: 1;
+    }
+    .hero > .container,
+    .hero > .doodle { position: relative; z-index: 2; }
     .hero-panel {
       max-width: 860px;
       margin: auto;
@@ -302,6 +321,7 @@
       border: 1px solid rgba(255,249,238,.3);
       border-radius: 46px;
       background: rgba(75,15,24,.38);
+      /* Layer 2: extra blur focused behind the text container */
       backdrop-filter: blur(7px);
       box-shadow: var(--shadow);
     }
@@ -669,7 +689,7 @@
       <div class="container reveal">
         <p class="eyebrow">Código de vestimenta</p>
         <h2 id="dress-title" class="section-title">Elegante</h2>
-        <p class="lead">Para mantener la armonía visual de la celebración, por favor evitar blanco, burdeo, borgoña y rojo.</p>
+        <p class="lead">Para mantener la armonía visual de la celebración, por favor <span style="font-weight:700">evitar</span> blanco, burdeo, borgoña y rojo.</p>
         <div class="dress-grid" aria-label="Colores que se deben evitar">
           <div class="swatch swatch-white"><span>Blanco</span></div>
           <div class="swatch swatch-red"><span>Rojo</span></div>

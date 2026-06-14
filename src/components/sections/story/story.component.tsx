@@ -18,6 +18,7 @@ export function Story() {
           >
             <PhotoPlaceholder
               src={IMAGES.storyLarge}
+              videoSrc={IMAGES.storyLargeVideo}
               alt="Vale y Jorge"
               label={
                 <>

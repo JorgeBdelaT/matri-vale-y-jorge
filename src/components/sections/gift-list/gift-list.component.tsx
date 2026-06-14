@@ -10,7 +10,24 @@ import { COPY, GIFT_LIST, LINKS } from "@/lib/constants.const";
 export function GiftList() {
   return (
     <Section variant="olive" center aria-labelledby="regalos-title">
-      <Doodle variant="gift" position="br" rotation={8} className="opacity-[0.23]" />
+      <Doodle variant="gift" position="tl" rotation={-12} scale={0.85} className="opacity-[0.23]" />
+      <Doodle variant="gift" position="tr" rotation={14} scale={1.1} className="opacity-[0.23]" />
+      <Doodle variant="gift" position="bl" rotation={9} scale={0.95} className="opacity-[0.23]" />
+      <Doodle variant="gift" position="br" rotation={-8} scale={1.15} className="opacity-[0.23]" />
+      <Doodle
+        variant="gift"
+        position="tl"
+        rotation={20}
+        scale={0.7}
+        className="left-[max(18px,38vw)] top-[clamp(14px,7vw,48px)] opacity-[0.23]"
+      />
+      <Doodle
+        variant="gift"
+        position="br"
+        rotation={-18}
+        scale={0.75}
+        className="bottom-auto right-[max(18px,40vw)] top-[clamp(14px,7vw,48px)] opacity-[0.23]"
+      />
       <SectionContainer>
         <Reveal>
           <Eyebrow>{COPY.gifts.eyebrow}</Eyebrow>
