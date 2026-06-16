@@ -55,25 +55,22 @@ export function EnvelopeIntro() {
     if (!flap || !card) return;
 
     let cancelled = false;
-    let zTimer: ReturnType<typeof setTimeout>;
+    let flapZTimer: ReturnType<typeof setTimeout>;
+    let cardZTimer: ReturnType<typeof setTimeout>;
 
     const start = setTimeout(() => {
       if (cancelled) return;
 
-      // Flap swings up around its fixed top edge. It stays on top (flapClosed)
-      // for almost the entire swing so the lip opening is fully visible, then
-      // tucks behind the card (flapOpen) just as the card starts to emerge.
+      // Flap swings up. Stays at z=30 (flapClosed) while rotating 0°→ -90° so
+      // the viewer sees the full opening sweep with the card behind it.
       animate(
         flap,
-        { rotateX: FLAP_OPEN_DEG, zIndex: [Z.flapClosed, Z.flapClosed, Z.flapOpen] },
-        { duration: 0.9, ease: [0.32, 0, 0.2, 1], times: [0, 0.82, 0.84] }
+        { rotateX: FLAP_OPEN_DEG },
+        { duration: 0.6, ease: [0, 0, 0.35, 1] }
       );
 
-      // One continuous keyframed move — slide fully out, rotate upright, zoom in
-      // and settle — so it reads as a single fluid gesture, not stepped phases.
-      // Delayed until the flap is open so the card never covers the flap's swing.
-      const CARD_DELAY = 0.74;
-      const MOVE_DUR = 2;
+      const CARD_DELAY = 0.6;
+      const MOVE_DUR = 1.6;
       animate(
         card,
         {
@@ -84,18 +81,25 @@ export function EnvelopeIntro() {
         { duration: MOVE_DUR, delay: CARD_DELAY, ease: [0.22, 0.61, 0.36, 1], times: [0, 0.4, 0.58, 1] }
       );
 
-      // Lift the card on top of the envelope ONLY once it has fully risen out of
-      // the pocket (at 40% of MOVE_DUR, when y reaches Y_OUT). Using a plain
-      // setTimeout because Framer Motion ignores `delay` when `duration: 0`.
-      zTimer = setTimeout(() => {
+      // Flap crosses -90° (vertical axis) at ≈296ms: with ease [0,0,0.35,1]
+      // over 140°, reaching 90° (64.3% of travel) happens at ~37% of 800ms.
+      // After this the flap is "above" the envelope — drop it behind the card.
+      flapZTimer = setTimeout(() => {
+        if (!cancelled) flap.style.zIndex = String(Z.flapOpen);
+      }, 296);
+
+      // Card jumps in front of everything once fully clear of the envelope (40%
+      // into MOVE_DUR = Y_OUT reached).
+      cardZTimer = setTimeout(() => {
         if (!cancelled) card.style.zIndex = String(Z.cardTop);
       }, (CARD_DELAY + MOVE_DUR * 0.4) * 1000);
-    }, 500);
+    }, 300);
 
     return () => {
       cancelled = true;
       clearTimeout(start);
-      clearTimeout(zTimer);
+      clearTimeout(flapZTimer);
+      clearTimeout(cardZTimer);
     };
   }, [reduced, animate]);
 
@@ -170,7 +174,7 @@ export function EnvelopeIntro() {
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: reduced ? 0 : 3.1, duration: 0.7, ease: "easeOut" }}
+        transition={{ delay: reduced ? 0 : 2.3, duration: 0.7, ease: "easeOut" }}
         className="absolute bottom-7 left-1/2 z-50 flex -translate-x-1/2 flex-col items-center gap-1 text-burgundy/70"
       >
         <span className="text-[0.7rem] font-semibold uppercase tracking-[0.3em]">
