@@ -47,7 +47,11 @@ export function Story() {
           <div>
             <Eyebrow>{COPY.story.eyebrow}</Eyebrow>
             <SectionTitle id="historia-title">{COPY.story.title}</SectionTitle>
-            <Lead className="mx-0 max-[860px]:mx-auto">{COPY.story.lead}</Lead>
+            {COPY.story.leads.map((paragraph, i) => (
+              <Lead key={i} className="mt-6">
+                {paragraph}
+              </Lead>
+            ))}
           </div>
         </Reveal>
       </SectionContainer>

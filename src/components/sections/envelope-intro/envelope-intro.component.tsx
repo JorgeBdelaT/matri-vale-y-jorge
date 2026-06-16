@@ -1,21 +1,103 @@
 "use client";
 
-import { motion } from "motion/react";
+import Image from "next/image";
+import { useEffect, useRef } from "react";
+import { motion, useAnimate } from "motion/react";
 
 import { Doodle } from "@/components/common/doodle/doodle.component";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion.hook";
-import { COPY, COUPLE, VENUE, WEDDING } from "@/lib/constants.const";
+import { COPY } from "@/lib/constants.const";
 
-/**
- * Apertura de la invitación: la solapa del sobre se abre con perspectiva,
- * cae detrás de la tarjeta y la tarjeta sube hasta quedar a la vista,
- * apenas guardada en el sobre.
- *
- * Capas (z): solapa cerrada 40 → abierta 25 · sobre 20 · tarjeta 15.
- * La tarjeta queda detrás del frente del sobre para el efecto "guardada".
- */
+// ── Geometry (all relative to the envelope so it scales on any screen) ───────
+// Everything is a fraction of the envelope WIDTH so the scene is responsive.
+const ENV_RATIO = 0.56; // envelope height / width — wide, flat real-envelope look
+const IMG_RATIO = 1939 / 2836; // card image short / long ≈ 0.684
+
+// Card is narrower than the envelope so it sits inside with margins and, once
+// out, the full-width flap stays visible behind/beside it.
+const CARD_LONG_FRAC = 0.81; // card long side as a fraction of envelope width
+const CARD_W_PCT = IMG_RATIO * CARD_LONG_FRAC * 100; // upright element width, % of envW
+const CARD_HALF_W_PCT = CARD_W_PCT / 2;
+const CARD_H_FRAC = CARD_LONG_FRAC; // upright element height / envW (≈ long side)
+const CARD_MT_PCT = -CARD_H_FRAC * 50; // margin-top to vertically center the element
+const CARD_HORIZ_H_FRAC = IMG_RATIO * CARD_LONG_FRAC; // horizontal card height / envW
+
+// `y` is a % of the element's own height (= CARD_H_FRAC × envW), so convert
+// envelope-width fractions into that basis.
+const yPct = (envWFraction: number) => `${-(envWFraction / CARD_H_FRAC) * 100}%`;
+// Lift the horizontal card fully clear of the top edge before it rotates.
+const Y_OUT = yPct(ENV_RATIO / 2 + CARD_HORIZ_H_FRAC / 2 + 0.06);
+// Presented: upright, zoomed, seated in the open envelope (overlaps its lower half).
+const FINAL_SCALE = 1.4;
+const Y_FINAL = yPct(0.46);
+
+// Flap open angle: leans back from the top edge so the lip reads as an open lid
+// flanking the card (kept under 180 to avoid foreshortening the visible ears).
+const FLAP_OPEN_DEG = -140;
+
+// z-index layers. The flap stays IN FRONT through its whole swing (so its open
+// animation is never hidden), then drops behind the card right as the card
+// emerges. Card is behind the pocket while inside, then on top once out.
+const Z = { back: 1, flapOpen: 6, card: 10, pocket: 20, flapClosed: 30, cardTop: 40 };
+
 export function EnvelopeIntro() {
-  const prefersReducedMotion = usePrefersReducedMotion();
+  const reduced = usePrefersReducedMotion();
+  const [scope, animate] = useAnimate();
+  const flapRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  // Play the opening once on mount. Reduced motion skips it — the inline styles
+  // already render the presented (final) state.
+  useEffect(() => {
+    if (reduced) return;
+    const flap = flapRef.current;
+    const card = cardRef.current;
+    if (!flap || !card) return;
+
+    let cancelled = false;
+    let zTimer: ReturnType<typeof setTimeout>;
+
+    const start = setTimeout(() => {
+      if (cancelled) return;
+
+      // Flap swings up around its fixed top edge. It stays on top (flapClosed)
+      // for almost the entire swing so the lip opening is fully visible, then
+      // tucks behind the card (flapOpen) just as the card starts to emerge.
+      animate(
+        flap,
+        { rotateX: FLAP_OPEN_DEG, zIndex: [Z.flapClosed, Z.flapClosed, Z.flapOpen] },
+        { duration: 0.9, ease: [0.32, 0, 0.2, 1], times: [0, 0.82, 0.84] }
+      );
+
+      // One continuous keyframed move — slide fully out, rotate upright, zoom in
+      // and settle — so it reads as a single fluid gesture, not stepped phases.
+      // Delayed until the flap is open so the card never covers the flap's swing.
+      const CARD_DELAY = 0.74;
+      const MOVE_DUR = 2;
+      animate(
+        card,
+        {
+          y: ["0%", Y_OUT, Y_OUT, Y_FINAL],
+          rotate: [90, 90, 0, 0],
+          scale: [1, 1, 1, FINAL_SCALE],
+        },
+        { duration: MOVE_DUR, delay: CARD_DELAY, ease: [0.22, 0.61, 0.36, 1], times: [0, 0.4, 0.58, 1] }
+      );
+
+      // Lift the card on top of the envelope ONLY once it has fully risen out of
+      // the pocket (at 40% of MOVE_DUR, when y reaches Y_OUT). Using a plain
+      // setTimeout because Framer Motion ignores `delay` when `duration: 0`.
+      zTimer = setTimeout(() => {
+        if (!cancelled) card.style.zIndex = String(Z.cardTop);
+      }, (CARD_DELAY + MOVE_DUR * 0.4) * 1000);
+    }, 500);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(start);
+      clearTimeout(zTimer);
+    };
+  }, [reduced, animate]);
 
   return (
     <section
@@ -25,72 +107,79 @@ export function EnvelopeIntro() {
       <Doodle variant="branch" position="tl" rotation={-12} />
       <Doodle variant="bird" position="br" rotation={10} />
 
-      <motion.div
-        className="relative h-[640px] w-[min(420px,88vw)] [perspective:1200px]"
-        initial={prefersReducedMotion ? false : { opacity: 0, y: 34 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+      {/* ── Envelope scene (sat lower so the presented card lands centered) ── */}
+      <div
+        ref={scope}
+        className="relative w-[min(420px,88vw)] translate-y-[24vh] [perspective:1200px]"
+        style={{ aspectRatio: 1 / ENV_RATIO }}
       >
-        {/* Solapa del sobre */}
-        <motion.div
-          aria-hidden="true"
-          className="absolute inset-x-0 bottom-[240px] h-[200px] origin-bottom bg-burgundy-3 shadow-[0_20px_60px_rgba(42,27,27,.2)] [clip-path:polygon(0_100%,50%_0,100%_100%)]"
-          initial={
-            prefersReducedMotion
-              ? { rotateX: 178, zIndex: 25 }
-              : { rotateX: 0, zIndex: 40 }
-          }
-          animate={{ rotateX: 178, zIndex: prefersReducedMotion ? 25 : [40, 40, 25] }}
-          transition={{
-            rotateX: { duration: 1.4, delay: 0.2, ease: "easeInOut" },
-            zIndex: { duration: 1.4, delay: 0.2, times: [0, 0.5, 0.51] },
-          }}
-        />
-
-        {/* Tarjeta de invitación (z-15: queda detrás del frente del sobre) */}
-        <motion.article
-          className="absolute inset-x-0 top-[10px] z-[15] mx-auto grid min-h-[380px] w-[78%] content-center rounded-[30px] border border-burgundy/15 bg-paper px-6 pb-14 pt-10 text-center shadow-[0_30px_90px_rgba(42,27,27,.24)] before:pointer-events-none before:absolute before:inset-3 before:rounded-[24px] before:border before:border-burgundy/15"
-          initial={prefersReducedMotion ? false : { y: 170, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{
-            y: { duration: 1.6, delay: 0.9, ease: [0.2, 0.8, 0.2, 1] },
-            opacity: { duration: 0.6, delay: 0.9, ease: "easeOut" },
-          }}
-        >
-          <p className="mb-4 text-[0.74rem] font-extrabold uppercase tracking-[0.38em]">
-            {COPY.intro.eyebrow}
-          </p>
-          <div
-            aria-hidden="true"
-            className="mx-auto mb-4 grid size-[72px] place-items-center rounded-full border border-burgundy/20 font-serif text-[1.4rem] italic text-olive"
-          >
-            {COUPLE.monogram}
-          </div>
-          <h1 className="font-serif text-[clamp(3rem,10vw,4.5rem)] font-normal italic leading-[0.82] tracking-[-0.06em]">
-            {COUPLE.bride}
-            <br />& {COUPLE.groom}
-          </h1>
-          <p className="mt-6 text-[0.82rem] uppercase tracking-[0.24em]">
-            {WEDDING.dateLabel}
-          </p>
-          <p className="mt-3 text-[0.9rem] text-olive">{VENUE.shortLabel}</p>
-        </motion.article>
-
-        {/* Cuerpo del sobre */}
+        {/* Back panel — solid body. Square top so it always covers the top
+              corners (a rounded top would leak background once the flap lifts). */}
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 bottom-0 z-20 h-[240px] overflow-hidden rounded-b-[30px] rounded-t-[10px] bg-[linear-gradient(145deg,var(--burgundy-2),var(--burgundy))] shadow-[0_30px_90px_rgba(42,27,27,.24)] before:absolute before:inset-0 before:bg-[linear-gradient(145deg,transparent_49%,rgba(255,255,255,.08)_50%,transparent_51%)] after:absolute after:inset-0 after:-scale-x-100 after:bg-[linear-gradient(145deg,transparent_49%,rgba(255,255,255,.08)_50%,transparent_51%)]"
+          className="absolute inset-0 z-[1] rounded-b-[16px] bg-[linear-gradient(160deg,var(--burgundy-2),var(--burgundy))] shadow-[0_24px_60px_rgba(42,27,27,.28)]"
         />
-      </motion.div>
 
-      <motion.p
-        className="absolute bottom-[26px] left-1/2 -translate-x-1/2 text-[0.72rem] font-extrabold uppercase tracking-[0.3em] text-burgundy/70"
-        initial={prefersReducedMotion ? false : { opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 2.4 }}
+        {/* Invitation card — narrower than the envelope so the flap shows
+              behind it once open; transforms tracked per-prop by Motion. */}
+        <motion.div
+          ref={cardRef}
+          aria-hidden="true"
+          className="absolute left-1/2 top-1/2 origin-center"
+          style={{
+            width: `${CARD_W_PCT}%`,
+            marginLeft: `${-CARD_HALF_W_PCT}%`,
+            marginTop: `${CARD_MT_PCT}%`,
+            rotate: reduced ? 0 : 90,
+            y: reduced ? Y_FINAL : "0%",
+            scale: reduced ? FINAL_SCALE : 1,
+            zIndex: reduced ? Z.cardTop : Z.card,
+          }}
+        >
+          <Image
+            src="/images/invitation-card.jpg"
+            width={1939}
+            height={2836}
+            alt="Tarjeta de invitación de Vale y Jorge"
+            priority
+            className="h-auto w-full shadow-[0_24px_70px_rgba(42,27,27,.34)]"
+          />
+        </motion.div>
+
+        {/* Front pocket — V-notch top (apex 48%) sits well above the flap point
+              (58%) so the flap overlaps it generously: no hairline see-through. */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 z-[20] rounded-b-[16px] bg-[linear-gradient(165deg,var(--burgundy),var(--burgundy-2))] [clip-path:polygon(0_0,50%_48%,100%_0,100%_100%,0_100%)]"
+        />
+
+        {/* Flap — inverted triangle, hinged on its fixed top edge; leans open
+              and stays visible behind the card. */}
+        <motion.div
+          ref={flapRef}
+          aria-hidden="true"
+          className="absolute left-0 right-0 top-0 h-[58%] origin-top bg-[linear-gradient(180deg,var(--burgundy-3),var(--dusty-rose))] shadow-[0_8px_22px_rgba(42,27,27,.22)] [clip-path:polygon(0_0,100%_0,50%_100%)] [transform-style:preserve-3d]"
+          style={{
+            rotateX: reduced ? FLAP_OPEN_DEG : 0,
+            zIndex: reduced ? Z.flapOpen : Z.flapClosed,
+          }}
+        />
+      </div>
+
+      {/* Scroll cue — fades in once the invitation is presented. */}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: reduced ? 0 : 3.1, duration: 0.7, ease: "easeOut" }}
+        className="absolute bottom-7 left-1/2 z-50 flex -translate-x-1/2 flex-col items-center gap-1 text-burgundy/70"
       >
-        {COPY.intro.scrollCue}
-      </motion.p>
+        <span className="text-[0.7rem] font-semibold uppercase tracking-[0.3em]">
+          {COPY.intro.scrollCue}
+        </span>
+        <span aria-hidden="true" className="animate-cta-float text-lg leading-none">
+          ⌄
+        </span>
+      </motion.div>
     </section>
   );
 }

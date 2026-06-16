@@ -39,7 +39,7 @@ export function Hero() {
       <Doodle variant="calendar" position="tr" rotation={9} className="z-[2] opacity-[0.23]" />
       <div className="relative z-[3] mx-auto w-full max-w-[1080px]">
         <Reveal className="mx-auto max-w-[860px]">
-          <div className="rounded-[46px] border border-paper/30 bg-burgundy/40 px-6 py-[clamp(36px,6vw,76px)] text-center shadow-[0_30px_90px_rgba(42,27,27,.24)] backdrop-blur-[7px] max-[540px]:rounded-[32px]">
+          <div className="rounded-[46px] border border-paper/30 bg-burgundy/40 px-6 py-[clamp(36px,6vw,76px)] text-center shadow-[0_30px_90px_rgba(42,27,27,.24)] backdrop-blur-[2px] max-[540px]:rounded-[32px]">
             <Eyebrow>{COPY.hero.eyebrow}</Eyebrow>
             <DisplayTitle>{COUPLE.displayName}</DisplayTitle>
             <p className="mt-6 text-[clamp(.95rem,2vw,1.2rem)] uppercase tracking-[0.22em]">

@@ -15,7 +15,10 @@ export function Rsvp() {
         <Reveal>
           <Eyebrow>{COPY.rsvp.eyebrow}</Eyebrow>
           <SectionTitle id="rsvp-title">{COPY.rsvp.title}</SectionTitle>
-          <Lead>{COPY.rsvp.lead}</Lead>
+          <Lead>
+            {COPY.rsvp.lead.noteBefore}
+            <span className="font-bold">{COPY.rsvp.lead.noteEmphasis}</span>
+          </Lead>
           <CtaButton variant="light" href={LINKS.rsvpForm}>
             {COPY.rsvp.cta}
           </CtaButton>

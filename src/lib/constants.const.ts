@@ -49,8 +49,9 @@ export interface TimelineItem {
 }
 
 export const TIMELINE: TimelineItem[] = [
-  { time: "17:00", icon: "✦", label: "Inicio de la celebración" },
-  { time: "20:00", icon: "♬", label: "Cena y brindis" },
+  { time: "17:00", icon: "☼", label: "Llegada" },
+  { time: "17:30", icon: "✦", label: "Ceremonia" },
+  { time: "18:30", icon: "♬", label: "Cóctel y brindis" },
   { time: "22:00", icon: "❦", label: "Fiesta" },
   { time: "01:00", icon: "☾", label: "Cierre" },
 ];
@@ -62,8 +63,19 @@ export interface DressCodeSwatch {
 
 export const DRESS_CODE = {
   code: "Elegante",
-  noteBefore: "Para mantener la armonía visual de la celebración, por favor ",
-  noteEmphasis: "evitar",
+  leads: [
+    {
+      noteBefore: "La celebración será en un entorno de jardín y naturaleza, por lo que recomendamos tenerlo en cuenta al elegir vestuario y calzado.",
+      noteEmphasis: "",
+      noteAfter: "",
+    },
+    {
+      noteBefore: "Por favor ",
+      noteEmphasis: "evitar ",
+      noteAfter: " blanco, burdeo, borgoña y rojo."
+    },
+
+  ],
   noteAfter: " blanco, burdeo, borgoña y rojo.",
   avoid: [
     { label: "Blanco", className: "bg-white border border-ink/15" },
@@ -97,13 +109,13 @@ export const COPY = {
   },
   story: {
     eyebrow: "Nuestra historia",
-    title: "Un día para celebrar",
-    lead: "Entre pedaleos, libros compartidos, cafés de la mañana y caminatas por la naturaleza construimos esta historia. Ahora queremos celebrar el siguiente capítulo junto a ustedes.",
+    title: "Momento para celebrar",
+    leads: ["Después de 9 años, varios viajes, muchos pedaleos y una cantidad indeterminada de anime, pastelitos, proyectos, hobbies y apañe, la evidencia acumulada era bastante contundente: seguir compartiendo aventuras parecía una muy buena idea.", "Así que decidimos formalizar el asunto."],
   },
   countdown: {
-    eyebrow: "Faltan",
+    eyebrow: "Falta poco",
     title: "Para el gran día",
-    lead: "Cada segundo nos acerca un poquito más a celebrar contigo.",
+    lead: "La cuenta regresiva ya comenzó.",
   },
   schedule: {
     eyebrow: "Ceremonia y celebración",
@@ -120,19 +132,22 @@ export const COPY = {
   rsvp: {
     eyebrow: "Confirmación",
     title: "¿Nos acompañas?",
-    lead: "Para organizar todo con mucho cariño, te pedimos confirmar tu asistencia lo antes posible.",
+    lead: {
+      noteBefore: "Para organizar todo con mucho cariño, te pedimos confirmar tu asistencia lo antes posible. ",
+      noteEmphasis: "Fecha máxima de confirmación: 31 de agosto.",
+    },
     cta: "Confirmar asistencia",
   },
   playlist: {
     eyebrow: "Nuestra música",
     title: "La playlist",
-    lead: "Ayúdanos a crear la mejor pista de baile. Agrega esas canciones que no pueden faltar.",
+    lead: "Todos tenemos esa canción que automáticamente mejora cualquier celebración. Agrega esas canciones que no pueden faltar.",
     cta: "Agregar canciones",
   },
   gifts: {
     eyebrow: "Sugerencia de regalo",
     title: "Lista de novios",
-    lead: "El mejor regalo es que nos acompañes, pero si deseas tener un detalle con nosotros, dejamos esta opción.",
+    lead: "Si estás pensando en darnos un detalle, te dejamos esta opción que nos ayudará a seguir sumando experiencias, proyectos, viajes y futuras aventuras.",
     codeLabel: "Código novios",
     copyHint: "Toca para copiar",
     copiedMessage: "¡Copiado!",

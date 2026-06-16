@@ -14,11 +14,13 @@ export function DressCode() {
         <Reveal>
           <Eyebrow>{COPY.dressCode.eyebrow}</Eyebrow>
           <SectionTitle id="dress-title">{COPY.dressCode.title}</SectionTitle>
-          <Lead>
-            {DRESS_CODE.noteBefore}
-            <span className="font-bold">{DRESS_CODE.noteEmphasis}</span>
-            {DRESS_CODE.noteAfter}
-          </Lead>
+          {DRESS_CODE.leads.map(({ noteBefore, noteEmphasis, noteAfter }, i) => (
+            <Lead key={i}>
+              {noteBefore}
+              <span className="font-bold">{noteEmphasis}</span>
+              {noteAfter}
+            </Lead>
+          ))}
           <ul
             className="mx-auto mt-12 grid max-w-[780px] list-none grid-cols-4 gap-4 max-[860px]:grid-cols-2 max-[540px]:grid-cols-1"
             aria-label="Colores que se deben evitar"

@@ -17,7 +17,7 @@ export function Schedule() {
             {WEDDING.dateLongLabel}, {WEDDING.timeLabel}.
           </Lead>
           <ol
-            className="mx-auto mt-[54px] grid max-w-[920px] list-none grid-cols-4 gap-3.5 max-[860px]:grid-cols-2 max-[540px]:grid-cols-1"
+            className="mx-auto mt-[54px] grid max-w-[920px] list-none grid-cols-5 gap-3.5 max-[860px]:grid-cols-2 max-[540px]:grid-cols-1"
             aria-label="Itinerario del evento"
           >
             {TIMELINE.map((item) => (
@@ -25,11 +25,11 @@ export function Schedule() {
                 key={item.time}
                 className="rounded-[30px] border border-burgundy/15 bg-paper/50 px-[18px] py-[30px]"
               >
+                <div aria-hidden="true" className="my-3 text-olive scale-[2.2]">
+                  {item.icon}
+                </div>
                 <div className="font-serif text-[2.5rem] italic text-burgundy">
                   {item.time}
-                </div>
-                <div aria-hidden="true" className="my-3 text-olive">
-                  {item.icon}
                 </div>
                 <div className="text-[0.78rem] font-extrabold uppercase leading-normal tracking-[0.15em]">
                   {item.label}
