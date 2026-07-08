@@ -1,3 +1,4 @@
+import { Carousel } from "@/components/common/carousel/carousel.component";
 import { Doodle } from "@/components/common/doodle/doodle.component";
 import { Reveal } from "@/components/common/reveal/reveal.component";
 import { Section, SectionContainer } from "@/components/common/section/section.component";
@@ -16,12 +17,14 @@ export function Schedule() {
           <Lead>
             {WEDDING.dateLongLabel}, {WEDDING.timeLabel}.
           </Lead>
-          <ol
-            className="mx-auto mt-[54px] grid max-w-[920px] list-none grid-cols-5 gap-3.5 max-[860px]:grid-cols-2 max-[540px]:grid-cols-1"
-            aria-label="Itinerario del evento"
-          >
-            {TIMELINE.map((item) => (
-              <li
+          <Carousel
+            mobileOnly
+            ariaLabel="Itinerario del evento"
+            slideLabelPrefix="Evento"
+            desktopGridClassName="grid-cols-5 gap-3.5 max-[860px]:grid-cols-2"
+            className="mx-auto mt-[54px] max-w-[920px]"
+            slides={TIMELINE.map((item) => (
+              <div
                 key={item.time}
                 className="rounded-[30px] border border-burgundy/15 bg-paper/50 px-[18px] py-[30px]"
               >
@@ -34,9 +37,9 @@ export function Schedule() {
                 <div className="text-[0.78rem] font-extrabold uppercase leading-normal tracking-[0.15em]">
                   {item.label}
                 </div>
-              </li>
+              </div>
             ))}
-          </ol>
+          />
         </Reveal>
       </SectionContainer>
     </Section>
