@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button/button.component";
 import { cn } from "@/lib/utils.util";
 
 export type CtaVariant = "light" | "dark" | "outline";
+export type CtaSize = "md" | "sm";
 
 const variantClasses: Record<CtaVariant, string> = {
   light:
@@ -10,8 +11,14 @@ const variantClasses: Record<CtaVariant, string> = {
   outline: "border-current bg-transparent text-current hover:bg-transparent",
 };
 
+const sizeClasses: Record<CtaSize, string> = {
+  md: "min-h-[60px] px-10 py-[18px] text-[0.85rem]",
+  sm: "min-h-[46px] px-7 py-3 text-[0.72rem]",
+};
+
 interface CtaButtonProps extends React.ComponentPropsWithoutRef<"a"> {
   variant?: CtaVariant;
+  size?: CtaSize;
   href: string;
 }
 
@@ -21,6 +28,7 @@ interface CtaButtonProps extends React.ComponentPropsWithoutRef<"a"> {
  */
 export function CtaButton({
   variant = "dark",
+  size = "md",
   className,
   children,
   ...props
@@ -29,7 +37,8 @@ export function CtaButton({
     <Button
       asChild
       className={cn(
-        "mt-[34px] inline-flex h-auto min-h-[60px] animate-cta-float gap-2.5 rounded-full border px-10 py-[18px] text-[0.85rem] font-extrabold uppercase tracking-[0.18em] no-underline transition-[background-color,color,border-color,box-shadow,scale] duration-300 ease-out hover:scale-105 active:scale-95 active:duration-100 motion-reduce:animate-none motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:active:scale-100",
+        "mt-[34px] inline-flex h-auto animate-cta-float gap-2.5 rounded-full border font-extrabold uppercase tracking-[0.18em] no-underline transition-[background-color,color,border-color,box-shadow,scale] duration-300 ease-out hover:scale-105 active:scale-95 active:duration-100 motion-reduce:animate-none motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:active:scale-100",
+        sizeClasses[size],
         variantClasses[variant],
         className
       )}
