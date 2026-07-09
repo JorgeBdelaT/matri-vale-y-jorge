@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion.hook";
 import { cn } from "@/lib/utils.util";
 
-const AUTOPLAY_MS = 5000;
+const AUTOPLAY_MS = 3500;
 
 interface CarouselProps {
   /** Contenido de cada diapositiva. */

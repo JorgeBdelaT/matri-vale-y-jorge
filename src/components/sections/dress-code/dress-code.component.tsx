@@ -1,4 +1,3 @@
-import { Carousel } from "@/components/common/carousel/carousel.component";
 import { Doodle } from "@/components/common/doodle/doodle.component";
 import { Reveal } from "@/components/common/reveal/reveal.component";
 import { Section, SectionContainer } from "@/components/common/section/section.component";
@@ -41,9 +40,9 @@ export function DressCode() {
               {noteAfter}
             </Lead>
           ))}
-          {/* Escritorio/tablet: cuadrícula. Móvil: carrusel. */}
+          {/* Cuadrícula: 4 columnas en escritorio, 2×2 en tablet y móvil. */}
           <ul
-            className="mx-auto mt-12 grid max-w-[780px] list-none grid-cols-4 gap-4 max-[860px]:grid-cols-2 max-[540px]:hidden"
+            className="mx-auto mt-12 grid max-w-[780px] list-none grid-cols-4 gap-4 max-[860px]:grid-cols-2 max-[540px]:grid-cols-2"
             aria-label="Colores que se deben evitar"
           >
             {DRESS_CODE.avoid.map((swatch) => (
@@ -52,14 +51,6 @@ export function DressCode() {
               </li>
             ))}
           </ul>
-          <Carousel
-            ariaLabel="Colores que se deben evitar"
-            slideLabelPrefix="Color"
-            className="mt-12 hidden max-[540px]:block"
-            slides={DRESS_CODE.avoid.map((swatch) => (
-              <SwatchCard key={swatch.label} swatch={swatch} />
-            ))}
-          />
         </Reveal>
       </SectionContainer>
     </Section>

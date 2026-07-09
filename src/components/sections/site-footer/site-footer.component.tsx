@@ -1,4 +1,5 @@
-import { COPY, COUPLE, IMAGES } from "@/lib/constants.const";
+import { CtaButton } from "@/components/common/cta-button/cta-button.component";
+import { COPY, COUPLE, IMAGES, LINKS } from "@/lib/constants.const";
 
 /** Cierre de la invitación. */
 export function SiteFooter() {
@@ -27,6 +28,9 @@ export function SiteFooter() {
         <p className="mt-3.5 text-[0.78rem] uppercase tracking-[0.18em] opacity-80">
           {COPY.footer.tagline}
         </p>
+        <CtaButton variant="light" size="sm" href={LINKS.rsvpForm}>
+          {COPY.rsvp.cta}
+        </CtaButton>
       </div>
     </footer>
   );

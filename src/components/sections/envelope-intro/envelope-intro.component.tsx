@@ -48,8 +48,16 @@ const Z = { back: 1, flapOpen: 6, card: 10, pocket: 20, flapClosed: 30, cardTop:
 export function EnvelopeIntro() {
   const reduced = usePrefersReducedMotion();
   const [scope, animate] = useAnimate();
+  const sectionRef = useRef<HTMLElement>(null);
   const flapRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+
+  // Scroll cue: advance past the full-screen intro to the next section (Hero).
+  // Decoupled from Hero via nextElementSibling. Honors reduced motion through
+  // the global `scroll-behavior` (smooth → auto).
+  const scrollToNext = () => {
+    sectionRef.current?.nextElementSibling?.scrollIntoView({ behavior: "smooth" });
+  };
 
   // Play the opening once on mount. Reduced motion skips it — the inline styles
   // already render the presented (final) state.
@@ -110,6 +118,7 @@ export function EnvelopeIntro() {
 
   return (
     <section
+      ref={sectionRef}
       aria-label="Apertura de invitación"
       className="texture texture-paper relative isolate grid min-h-screen min-h-svh place-items-center overflow-hidden bg-[radial-gradient(circle_at_20%_20%,rgba(232,182,170,.5),transparent_34%),radial-gradient(circle_at_86%_78%,rgba(104,116,58,.34),transparent_34%)] bg-ivory px-[22px] py-16 text-burgundy"
     >
@@ -185,14 +194,19 @@ export function EnvelopeIntro() {
         transition={{ delay: reduced ? 0 : 1.95, duration: 0.7, ease: "easeOut" }}
         className="absolute bottom-7 left-1/2 z-50 -translate-x-1/2 text-burgundy/70"
       >
-        <div className="flex flex-col items-center gap-1 animate-scroll-hint">
+        <button
+          type="button"
+          onClick={scrollToNext}
+          aria-label="Ir a la siguiente sección"
+          className="flex cursor-pointer flex-col items-center gap-1 animate-scroll-hint transition-colors hover:text-burgundy focus-visible:text-burgundy"
+        >
           <span className="text-[0.85rem] font-semibold uppercase tracking-[0.3em]">
             {COPY.intro.scrollCue}
           </span>
           <span aria-hidden="true" className="text-2xl leading-none">
             ⌄
           </span>
-        </div>
+        </button>
       </motion.div>
     </section>
   );
