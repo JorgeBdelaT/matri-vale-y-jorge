@@ -110,7 +110,7 @@ export const COPY = {
   story: {
     eyebrow: "Nuestra historia",
     title: "Momento para celebrar",
-    leads: ["Después de 9 años, varios viajes, muchos pedaleos y una cantidad indeterminada de anime, pastelitos, proyectos, hobbies y apañe, la evidencia acumulada era bastante contundente: seguir compartiendo aventuras parecía una muy buena idea.", "Así que decidimos formalizar el asunto."],
+    leads: ["Después de 9 años, varios viajes, muchos pedaleos y una cantidad indeterminada de anime, pastelitos, proyectos, hobbies y apañe, la evidencia acumulada era bastante contundente: seguir compartiendo aventuras parecía una muy buena idea.", "Así que decidimos formalizar el asunto y celebrarlo con ustedes."],
   },
   countdown: {
     eyebrow: "Falta poco",
@@ -148,7 +148,7 @@ export const COPY = {
     eyebrow: "Sugerencia de regalo",
     title: "Lista de novios",
     lead: "Si estás pensando en darnos un detalle, te dejamos esta opción que nos ayudará a seguir sumando experiencias, proyectos, viajes y futuras aventuras.",
-    codeLabel: "Código novios",
+    codeLabel: "Código novios Paris",
     copyHint: "Toca para copiar",
     copiedMessage: "¡Copiado!",
     cta: "Ver lista",
