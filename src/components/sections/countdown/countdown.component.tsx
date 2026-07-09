@@ -33,7 +33,7 @@ export function Countdown() {
             {countdown?.isPast ? "¡Llegó el gran día!" : COPY.countdown.lead}
           </Lead>
           <div
-            className="mx-auto mt-[52px] grid max-w-[800px] grid-cols-4 gap-4 max-[860px]:grid-cols-2 max-[540px]:grid-cols-1"
+            className="mx-auto mt-[52px] grid max-w-[800px] grid-cols-4 gap-4 max-[860px]:grid-cols-2 max-[540px]:grid-cols-4 max-[540px]:gap-1.5"
             role="list"
             aria-live="off"
           >
@@ -41,12 +41,12 @@ export function Countdown() {
               <div
                 key={key}
                 role="listitem"
-                className="rounded-[28px] border border-paper/20 bg-paper/10 px-4 py-7"
+                className="rounded-[28px] border border-paper/20 bg-paper/10 px-4 py-7 max-[540px]:rounded-[16px] max-[540px]:px-1 max-[540px]:py-3"
               >
-                <strong className="block font-serif text-[clamp(3rem,8vw,5.2rem)] font-light leading-[0.9] tabular-nums">
+                <strong className="block font-serif text-[clamp(3rem,8vw,5.2rem)] font-light leading-[0.9] tabular-nums max-[540px]:text-[clamp(1.4rem,7vw,2.2rem)]">
                   {countdown ? pad(countdown[key]) : "··"}
                 </strong>
-                <span className="mt-3 block text-[0.72rem] font-extrabold uppercase tracking-[0.22em]">
+                <span className="mt-3 block text-[0.72rem] font-extrabold uppercase tracking-[0.22em] max-[540px]:mt-1.5 max-[540px]:text-[0.6rem] max-[540px]:tracking-[0.12em]">
                   {label}
                 </span>
               </div>

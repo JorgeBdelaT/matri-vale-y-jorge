@@ -29,7 +29,12 @@ const yPct = (envWFraction: number) => `${-(envWFraction / CARD_H_FRAC) * 100}%`
 const Y_OUT = yPct(ENV_RATIO / 2 + CARD_HORIZ_H_FRAC / 2 + 0.06);
 // Presented: upright, zoomed, seated in the open envelope (overlaps its lower half).
 const FINAL_SCALE = 1.4;
-const Y_FINAL = yPct(0.46);
+// The card lifts up by CARD_LIFT_FRAC × envelope-width from its centered rest
+// spot. The whole scene is then dropped by the same amount so the presented card
+// lands vertically centered — a fraction of the envelope's own size, so it holds
+// on any screen (unlike a vh offset, which over-shifts on tall/large devices).
+const CARD_LIFT_FRAC = 0.46;
+const Y_FINAL = yPct(CARD_LIFT_FRAC);
 
 // Flap open angle: leans back from the top edge so the lip reads as an open lid
 // flanking the card (kept under 180 to avoid foreshortening the visible ears).
@@ -66,11 +71,11 @@ export function EnvelopeIntro() {
       animate(
         flap,
         { rotateX: FLAP_OPEN_DEG },
-        { duration: 0.6, ease: [0, 0, 0.35, 1] }
+        { duration: 0.48, ease: [0, 0, 0.35, 1] }
       );
 
-      const CARD_DELAY = 0.6;
-      const MOVE_DUR = 1.6;
+      const CARD_DELAY = 0.45;
+      const MOVE_DUR = 1.3;
       animate(
         card,
         {
@@ -81,12 +86,12 @@ export function EnvelopeIntro() {
         { duration: MOVE_DUR, delay: CARD_DELAY, ease: [0.22, 0.61, 0.36, 1], times: [0, 0.4, 0.58, 1] }
       );
 
-      // Flap crosses -90° (vertical axis) at ≈296ms: with ease [0,0,0.35,1]
-      // over 140°, reaching 90° (64.3% of travel) happens at ~37% of 800ms.
+      // Flap crosses -90° (vertical axis) at ≈180ms: with ease [0,0,0.35,1]
+      // over 140°, reaching 90° (64.3% of travel) happens at ~37% of 480ms.
       // After this the flap is "above" the envelope — drop it behind the card.
       flapZTimer = setTimeout(() => {
         if (!cancelled) flap.style.zIndex = String(Z.flapOpen);
-      }, 296);
+      }, 180);
 
       // Card jumps in front of everything once fully clear of the envelope (40%
       // into MOVE_DUR = Y_OUT reached).
@@ -106,7 +111,7 @@ export function EnvelopeIntro() {
   return (
     <section
       aria-label="Apertura de invitación"
-      className="texture texture-paper relative isolate grid min-h-screen place-items-center overflow-hidden bg-[radial-gradient(circle_at_20%_20%,rgba(232,182,170,.5),transparent_34%),radial-gradient(circle_at_86%_78%,rgba(104,116,58,.34),transparent_34%)] bg-ivory px-[22px] py-16 text-burgundy"
+      className="texture texture-paper relative isolate grid min-h-screen min-h-svh place-items-center overflow-hidden bg-[radial-gradient(circle_at_20%_20%,rgba(232,182,170,.5),transparent_34%),radial-gradient(circle_at_86%_78%,rgba(104,116,58,.34),transparent_34%)] bg-ivory px-[22px] py-16 text-burgundy"
     >
       <Doodle variant="branch" position="tl" rotation={-12} />
       <Doodle variant="bird" position="br" rotation={10} />
@@ -114,8 +119,11 @@ export function EnvelopeIntro() {
       {/* ── Envelope scene (sat lower so the presented card lands centered) ── */}
       <div
         ref={scope}
-        className="relative w-[min(420px,88vw)] translate-y-[24vh] [perspective:1200px]"
-        style={{ aspectRatio: 1 / ENV_RATIO }}
+        className="relative z-10 w-[min(420px,88vw)] [perspective:1200px]"
+        style={{
+          aspectRatio: 1 / ENV_RATIO,
+          transform: `translateY(calc(min(420px, 88vw) * ${CARD_LIFT_FRAC}))`,
+        }}
       >
         {/* Back panel — solid body. Square top so it always covers the top
               corners (a rounded top would leak background once the flap lifts). */}
@@ -174,15 +182,17 @@ export function EnvelopeIntro() {
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: reduced ? 0 : 2.3, duration: 0.7, ease: "easeOut" }}
-        className="absolute bottom-7 left-1/2 z-50 flex -translate-x-1/2 flex-col items-center gap-1 text-burgundy/70"
+        transition={{ delay: reduced ? 0 : 1.95, duration: 0.7, ease: "easeOut" }}
+        className="absolute bottom-7 left-1/2 z-50 -translate-x-1/2 text-burgundy/70"
       >
-        <span className="text-[0.7rem] font-semibold uppercase tracking-[0.3em]">
-          {COPY.intro.scrollCue}
-        </span>
-        <span aria-hidden="true" className="animate-cta-float text-lg leading-none">
-          ⌄
-        </span>
+        <div className="flex flex-col items-center gap-1 animate-scroll-hint">
+          <span className="text-[0.85rem] font-semibold uppercase tracking-[0.3em]">
+            {COPY.intro.scrollCue}
+          </span>
+          <span aria-hidden="true" className="text-2xl leading-none">
+            ⌄
+          </span>
+        </div>
       </motion.div>
     </section>
   );
