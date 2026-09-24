@@ -134,7 +134,7 @@ export const COPY = {
     title: "¿Nos acompañas?",
     lead: {
       noteBefore: "Para organizar todo con mucho cariño, te pedimos confirmar tu asistencia lo antes posible. ",
-      noteEmphasis: "Fecha máxima de confirmación: 31 de agosto.",
+      noteEmphasis: "Fecha máxima de confirmación: 10 de octubre.",
     },
     cta: "Confirmar asistencia",
   },
